@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import log from 'cuvva-log';
+import Octonode from 'octonode';
 import App from '../app';
 import Storage from '../lib/storage';
 
@@ -8,6 +9,11 @@ log.setHandler('fatal', () => { process.exit(1); });
 
 async function start() {
 	const port = process.env.PORT || 3000;
+
+	Octonode.auth.config({
+		id: process.env.GITHUB_ID,
+		secret: process.env.GITHUB_SECRET,
+	});
 
 	App.set('storage', await Storage.connect(process.env.MONGOLAB_URI));
 
