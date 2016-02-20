@@ -1,3 +1,4 @@
+import Q from 'q';
 import Octonode from 'octonode';
 
 export default async function (req, res, next) {
@@ -16,9 +17,9 @@ async function handle(req, res) {
 	let githubToken = req.signedCookies.githubToken;
 
 	if (req.path === '/github_callback') {
-		const token = await getAccessToken(req.query.code);
-		const client = createClient(token);
-		const info = await getUserInfo(client);
+		const token = await Q.ninvoke(Octonode.auth, 'login', req.query.code);
+		const ghme = Octonode.client(token).me();
+		const info = await Q.ninvoke(ghme, 'info');
 
 		githubId = info.id;
 		githubToken = token;
@@ -37,30 +38,4 @@ async function handle(req, res) {
 	req.auth = { githubId, githubToken };
 
 	return 'next';
-}
-
-async function getAccessToken(authorizationCode) {
-	return await new Promise((resolve, reject) => {
-		Octonode.auth.login(authorizationCode, (error, token) => {
-			if (error)
-				reject(error);
-			else
-				resolve(token);
-		});
-	});
-}
-
-function createClient(accessToken) {
-	return Octonode.client(accessToken);
-}
-
-async function getUserInfo(client) {
-	return new Promise((resolve, reject) => {
-		client.me().info((error, info) => {
-			if (error)
-				reject(error);
-			else
-				resolve(info);
-		});
-	});
 }
