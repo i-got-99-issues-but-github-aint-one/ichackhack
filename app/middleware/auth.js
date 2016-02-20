@@ -19,7 +19,7 @@ async function handle(req, res) {
 	if (req.path === '/github_callback') {
 		const token = await Q.ninvoke(Octonode.auth, 'login', req.query.code);
 		const ghme = Octonode.client(token).me();
-		const info = await Q.ninvoke(ghme, 'info');
+		const [info] = await Q.ninvoke(ghme, 'info');
 
 		githubId = info.id;
 		githubToken = token;
