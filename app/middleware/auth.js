@@ -25,7 +25,7 @@ async function handle(req, res) {
 		githubToken = token;
 	}
 
-	if (!githubId || !githubToken) {
+	if (!githubId || !githubToken || req.path === '/github_auth') {
 		const redirUrl = Octonode.auth.login(['public_repo']);
 		res.redirect(redirUrl);
 		return;
