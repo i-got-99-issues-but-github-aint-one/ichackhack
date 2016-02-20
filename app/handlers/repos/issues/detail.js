@@ -1,9 +1,10 @@
 import wu from 'wu';
 import Q from 'q';
 import Octonode from 'octonode';
-import JSONClient from 'json-client-node';
 
 export default async function (req, res) {
+	const azureClient = req.app.get('azure');
+
 	const client = Octonode.client(req.auth.githubToken);
 	const repo = client.repo(`${req.params.repo_owner}/${req.params.repo_name}`);
 
@@ -14,15 +15,6 @@ export default async function (req, res) {
 	At some point, we could possibly extend this to look for things which indicate
 	positive sentiment, for example +1s, :ship: emoji, etc...
 	*/
-
-	// configure azure client
-	const azure_url = 'https://api.datamarket.azure.com/data.ashx/amla/text-analytics/v1';
-
-	let azure_client = JSONClient(azure_url, {
-		'headers': {
-			'Authorization': 'Basic ' + req.app.get('azure_key')
-		}
-	});
 
 	const [comments] = await Q.ninvoke(issue, 'comments');
 
