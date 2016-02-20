@@ -35,8 +35,7 @@ export default async function (req, res) {
 	// work out the overall senitment of the issue
 
 	for (let comment of comments) {
-
-		for (let [token, total] of positive_sentiment) {
+		for (let [token] of positive_sentiment) {
 			if (comment.body.includes(token)) {
 				positive_sentiment.set(token, positive_sentiment.get(token) + 1);
 			}
@@ -44,9 +43,9 @@ export default async function (req, res) {
 
 		// collate together all of the different users' comments
 		if (!user_comments.has(comment.user.login)) {
-			user_comments.set(comment.user.login, comment.body)
+			user_comments.set(comment.user.login, comment.body);
 		} else {
-			user_comments.set(comment.user.login, user_comments.get(comment.user.login) + "\n" + comment.body);
+			user_comments.set(comment.user.login, user_comments.get(comment.user.login) + '\n' + comment.body);
 		}
 	}
 
@@ -67,8 +66,8 @@ export default async function (req, res) {
 	// TODO: correlate this with other data, like the contributors' ranks etc.
 
 	res.json({
-		"comment_count": comments.length,
-		"positive_strings": wu(positive_sentiment.values()).reduce((a, b) => a + b, 0),
-		"sentiment_score": sentiment_score
+		comment_count: comments.length,
+		positive_strings: wu(positive_sentiment.values()).reduce((a, b) => a + b, 0),
+		sentiment_score: sentiment_score,
 	});
 }
