@@ -51,7 +51,7 @@ export default async function (req, res) {
 
 	let user_sentiments = new Map();
 
-	await Promise.all(wu(user_comments).map(async (name, comment) => {
+	await Promise.all(wu(user_comments.entries()).map(async ([name, comment]) => {
 		let result = await azureClient('get', 'GetSentiment', {
 			Text: comment,
 		});
