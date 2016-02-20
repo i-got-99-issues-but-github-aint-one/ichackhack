@@ -1,18 +1,11 @@
 import Q from 'q';
 import Octonode from 'octonode';
 
-export default async function (req, res, next) {
-	handle(req, res)
-	.then(action => {
-		if (action === 'next')
-			next();
-	})
-	.catch(error => {
-		next(error);
-	});
+export default function (req, res, next) {
+	handle(req, res, next).catch(e => next(e));
 }
 
-async function handle(req, res) {
+async function handle(req, res, next) {
 	let auth = req.signedCookies.auth;
 
 	if (req.path === '/github_callback') {
@@ -41,5 +34,5 @@ async function handle(req, res) {
 
 	req.auth = auth;
 
-	return 'next';
+	next();
 }
