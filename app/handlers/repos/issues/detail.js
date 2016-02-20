@@ -1,7 +1,8 @@
 import Q from 'q';
+import Octonode from 'octonode';
 
 export default async function (req, res) {
-	const client = req.app.get('github');
+	const client = Octonode.client(req.auth.githubToken);
 	const repo = client.repo(`${req.params.repo_owner}/${req.params.repo_name}`);
 
 	// find out some info about the issue the api is being asked about.
