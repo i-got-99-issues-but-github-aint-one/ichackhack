@@ -15,6 +15,10 @@ async function start() {
 		secret: process.env.GITHUB_SECRET,
 	});
 
+    var azureml_token = process.env.AZURE_KEY;
+
+    App.set('azure_key', new Buffer('AccountKey:' + azureml_token).toString('base64'));
+
 	App.set('storage', await Storage.connect(process.env.MONGOLAB_URI));
 
 	App.listen(port, () => log.info('http_listening', { port: port }));
