@@ -15,6 +15,11 @@ async function start() {
 		secret: process.env.GITHUB_SECRET,
 	});
 
+	App.set('github', Octonode.client({
+		id: process.env.GITHUB_ID,
+		secret: process.env.GITHUB_SECRET,
+	}));
+
 	App.set('storage', await Storage.connect(process.env.MONGOLAB_URI));
 
 	App.listen(port, () => log.info('http_listening', { port: port }));
