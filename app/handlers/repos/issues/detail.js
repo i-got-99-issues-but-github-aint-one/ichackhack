@@ -17,7 +17,7 @@ export default async function (req, res) {
 	// TODO: once we have a cache of comments:
 	//       1. use the cached data
 	//       2. add a since parameter, so we're not always fetching all of the comments
-	const comments = await Q.ninvoke(issue, 'comments');
+	const [comments] = await Q.ninvoke(issue, 'comments');
 
 	let plus1s = 0;
 
