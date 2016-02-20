@@ -1,4 +1,5 @@
 import Q from 'q';
+import Octonode from 'octonode';
 
 export default async function (req, res) {
 	const client = Octonode.client(req.auth.githubToken);

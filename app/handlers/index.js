@@ -5,4 +5,4 @@ const router = Router();
 export default router;
 
 // prefix /
-router.get('/repos', repos);
+router.use('/repos', repos);
