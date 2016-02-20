@@ -35,6 +35,11 @@ async function handle(req, res) {
 	res.cookie('githubId', githubId, cookieOpts);
 	res.cookie('githubToken', githubToken, cookieOpts);
 
+	if (req.path === '/github_callback') {
+		res.redirect('/');
+		return;
+	}
+
 	req.auth = { githubId, githubToken };
 
 	return 'next';
