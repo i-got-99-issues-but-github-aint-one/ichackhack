@@ -51,13 +51,13 @@ export default async function (req, res) {
 
 	let user_sentiments = new Map();
 
-	for (let [name, comment] of user_comments) {
-		let result = await azure_client('get', 'GetSentiment', {
-			'Text': comment
-		})
+	await Promise.all(wu(user_comments.values()).map(async comment => {
+		let result = await azureClient('get', 'GetSentiment', {
+			Text: comment,
+		});
 
 		user_sentiments.set(name, result.Score);
-	}
+	}));
 
 	// we can now look at the maximum, average and minimum sentiments of each
 	// of the users:
